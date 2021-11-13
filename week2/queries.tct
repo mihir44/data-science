@@ -1,0 +1,30 @@
+main table:
+ create table invoice_data(
+     company varchar(255),
+     dateOrdered date,
+     invoiceNumber bigint,
+     itemOrdered varchar(255),
+     address varchar(500)
+ );
+
+trigger table
+create table data(
+    status varchar(255),
+    inserted_date date
+);
+
+trigger
+delimiter //
+CREATE TRIGGER order_status
+after insert on invoice_data
+for each row
+begin
+insert into data(status, inserted_date) values ('Orders Added', CURDATE());
+end//
+
+procedure
+create procedure disp_max(OUT no_of_orders)
+begin
+select count(*) from invoice_data;
+end//
+
